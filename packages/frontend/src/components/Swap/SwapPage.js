@@ -98,8 +98,7 @@ const SwapPage = () => {
         dispatch(fetchMultiplier());
     }, [dispatch]);
 
-    console.log("slippPageValue");
-
+    console.log("");
     return (
         <StyledContainer className="small-centered">
             {!isSuccess ? (
