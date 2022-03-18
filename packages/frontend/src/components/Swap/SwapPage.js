@@ -185,14 +185,6 @@ const SwapPage = () => {
                             type="submit"
                             disabled={error}
                             data-test-id="sendMoneyPageSubmitAmountButton"
-                            // onClick={() =>
-                            //     send(
-                            //         accountId,
-                            //         miltiplier,
-                            //         +slippPageValue,
-                            //         +inputValueFrom
-                            //     )
-                            // }
                         >
                             <Translate id="button.continue" />
                         </FormButton>
