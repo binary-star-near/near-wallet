@@ -1,13 +1,14 @@
-import React from 'react';
-import { Translate } from 'react-localize-redux';
-import { NavLink } from 'react-router-dom';
-import styled from 'styled-components';
+import React from "react";
+import { Translate } from "react-localize-redux";
+import { NavLink } from "react-router-dom";
+import styled from "styled-components";
 
-import { Mixpanel } from '../../mixpanel/index';
-import HelpIcon from '../svg/HelpIcon';
-import UserIcon from '../svg/UserIcon';
-import VaultIcon from '../svg/VaultIcon';
-import WalletIcon from '../svg/WalletIcon';
+import { Mixpanel } from "../../mixpanel/index";
+import HelpIcon from "../svg/HelpIcon";
+import SwapIconTwoArrows from "../svg/SwapIconTwoArrows";
+import UserIcon from "../svg/UserIcon";
+import VaultIcon from "../svg/VaultIcon";
+import WalletIcon from "../svg/WalletIcon";
 
 const Container = styled.div`
     display: flex;
@@ -16,22 +17,25 @@ const Container = styled.div`
         align-items: center;
         cursor: pointer;
         transition: 100ms;
-        color: #72727A;
+        color: #72727a;
         font-size: 15px;
 
-        :hover, &.selected {
+        :hover,
+        &.selected {
             text-decoration: none;
             color: #272729;
 
             svg {
-                path, circle, line {
-                    stroke: #0072CE;
+                path,
+                circle,
+                line {
+                    stroke: #0072ce;
                 }
 
                 &.user-icon {
                     path {
-                        stroke: #0072CE;
-                        fill: #0072CE;
+                        stroke: #0072ce;
+                        fill: #0072ce;
 
                         :last-of-type {
                             fill: none;
@@ -75,23 +79,59 @@ const Container = styled.div`
 `;
 
 const NavLinks = () => (
-    <Container className='nav-links'>
-        <NavLink exact to='/' activeClassName='selected' onClick={() => Mixpanel.track('Click Wallet button on nav')}>
-            <WalletIcon/>
-            <Translate id='link.wallet'/>
+    <Container className="nav-links">
+        <NavLink
+            exact
+            to="/"
+            activeClassName="selected"
+            onClick={() => Mixpanel.track("Click Wallet button on nav")}
+        >
+            <WalletIcon />
+            <Translate id="link.wallet" />
         </NavLink>
-        <NavLink data-test-id="staking_navlink" to='/staking' activeClassName='selected' onClick={() => Mixpanel.track('Click Staking button on nav')}>
-            <VaultIcon/>
-            <Translate id='link.staking'/>
+        <NavLink
+            data-test-id="staking_navlink"
+            to="/staking"
+            activeClassName="selected"
+            onClick={() => Mixpanel.track("Click Staking button on nav")}
+        >
+            <VaultIcon />
+            <Translate id="link.staking" />
         </NavLink>
-        <NavLink to='/profile' className='account-details-link' activeClassName='selected' onClick={() => Mixpanel.track('Click Account button on nav')}>
-            <UserIcon/>
-            <Translate id='link.account'/>
+        <NavLink
+            to="/profile"
+            className="account-details-link"
+            activeClassName="selected"
+            onClick={() => Mixpanel.track("Click Account button on nav")}
+        >
+            <UserIcon />
+            <Translate id="link.account" />
         </NavLink>
-        <a href='https://nearhelp.zendesk.com/' target='_blank' rel='noopener noreferrer' onClick={() => Mixpanel.track('Click Help button on nav')}>
-            <HelpIcon/>
-            <Translate id='link.help'/>
+        <a
+            href="https://nearhelp.zendesk.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => Mixpanel.track("Click Help button on nav")}
+        >
+            <HelpIcon />
+            <Translate id="link.help" />
         </a>
+        <NavLink
+            to="/swap-money"
+            activeClassName="selected"
+            onClick={() => Mixpanel.track("Click Account button on nav")}
+        >
+            <div>
+                <SwapIconTwoArrows
+                    width={"20"}
+                    height="16"
+                    color="#A2A2A8"
+                    margin="10px"
+                />
+            </div>
+
+            <Translate id="button.swap" />
+        </NavLink>
     </Container>
 );
 

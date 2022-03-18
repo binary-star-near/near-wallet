@@ -264,6 +264,7 @@
         "staking": "Staking",
         "startOver": "Start over",
         "subscribe": "Subscribe",
+        "swap": "Swap",
         "topUp": "Top Up",
         "transferring": "Transferring",
         "tryAgain": "Try Again",
@@ -559,6 +560,7 @@
         "noAccount": "You have no other accounts",
         "receive": "Receive",
         "send": "Send",
+        "swap": "Swap",
         "staking": "Staking",
         "switchAccount": "Account",
         "wallet": "Wallet"
@@ -1378,6 +1380,17 @@
             "title": "Select a Validator"
         }
     },
+    "swap": {
+        "from": "From",
+        "to": "To",
+        "AvailableToSwap": "Available to swap",
+        "slipPage": "Slippage tolerance",
+        "pairPrice": "Pair price",
+        "ExpectedPrice": "Expected price",
+        "TradingFee": "Trading fee",
+        "MinimumReceived": "Minimum received",
+        "slipPageError": "from 1 to 50"
+    },
     "stakingPoolUnstaked": "This NEAR is currently in a staking pool but unstaked. It could for example be in a pending release state.",
     "success": "Success",
     "sync": "Sync",
@@ -1502,7 +1515,8 @@
         "tokens": "Tokens",
         "totalBalance": "Total Balance",
         "totalBalanceTitle": "Total Balance",
-        "yourPortfolio": "Your Portfolio"
+        "yourPortfolio": "Your Portfolio",
+        "OthersTokens": "Other tokens"
     },
     "walletErrorCodes": {
         "addAccessKey": {

@@ -256,6 +256,7 @@
         "staking": "Staking",
         "startOver": "Iniciar novamente",
         "subscribe": "Inscrever-se",
+        "swap": "Troca",
         "topUp": "Top Up",
         "transferring": "Transferindo",
         "tryAgain": "Tentar Novamente",
@@ -922,6 +923,17 @@
         "switchAccounthNotAllowed": "Esse aplicativo não permite alterações na conta"
     },
     "sending": "ENVIANDO",
+    "swap": {
+        "from": "A partir de",
+        "to": "Para",
+        "AvailableToSwap": "Disponível para troca",
+        "slipPage": "Tolerância de deslizamento",
+        "pairPrice": "Preço do par",
+        "ExpectedPrice": "Preço esperado",
+        "TradingFee": "Taxa de negociação",
+        "MinimumReceived": "Mínimo recebido",
+        "slipPageError": "de 1 a 50"
+    },
     "sendMoney": {
         "account": {
             "title": "Enviar para"
