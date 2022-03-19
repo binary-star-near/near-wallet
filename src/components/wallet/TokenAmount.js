@@ -62,6 +62,8 @@ const TokenAmount = ({
                 <BalanceDisplayUSD
                     amount={balance}
                     nearTokenFiatValueUSD={coingeckoMetadata?.usd}
+                    decimals={onChainFTMetadata?.decimals}
+                    isNear={true}
                 />
             </div>
         ) : (

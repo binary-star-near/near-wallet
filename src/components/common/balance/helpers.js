@@ -1,5 +1,6 @@
 import BN from "bn.js";
 import { utils } from "near-api-js";
+import { formatTokenAmount } from "../../../utils/amounts";
 
 const FRAC_DIGITS = 5;
 export const YOCTO_NEAR_THRESHOLD = new BN("10", 10).pow(
@@ -32,9 +33,16 @@ export const formatWithCommas = (value) => {
     return value;
 };
 
-export const getRoundedBalanceInFiat = (rawNearAmount, tokenFiatValue) => {
+export const getRoundedBalanceInFiat = (
+    rawNearAmount,
+    tokenFiatValue,
+    isNear,
+    decimals
+) => {
     const formattedNearAmount =
-        rawNearAmount && formatNearAmount(rawNearAmount).replace(/,/g, "");
+        rawNearAmount && !isNear
+            ? formatNearAmount(rawNearAmount).replace(/,/g, "")
+            : formatTokenAmount(rawNearAmount, decimals);
     const balanceInFiat = Number(formattedNearAmount) * tokenFiatValue;
     const roundedBalanceInFiat = balanceInFiat && balanceInFiat.toFixed(2);
     if (

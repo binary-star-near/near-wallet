@@ -193,6 +193,8 @@
         "browseApps": "Browse Apps",
         "buy": "Buy",
         "cancel": "Cancel",
+        "backToSwap": "Back to Swap",
+        "ToMaine": "To the main screen",
         "cancelOperation": "Cancel Operation",
         "cancelTransfer": "Cancel Transfer",
         "claimAccount": "Claim Account",
@@ -1389,7 +1391,11 @@
         "ExpectedPrice": "Expected price",
         "TradingFee": "Trading fee",
         "MinimumReceived": "Minimum received",
-        "slipPageError": "from 1 to 50"
+        "slipPageError": "from 1 to 50",
+        "success": {
+            "complete": "Transaction complete!",
+            "youSwap": "You swap"
+        }
     },
     "stakingPoolUnstaked": "This NEAR is currently in a staking pool but unstaked. It could for example be in a pending release state.",
     "success": "Success",

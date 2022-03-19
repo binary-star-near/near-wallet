@@ -1,11 +1,14 @@
-import * as nearApiJs from "near-api-js";
-
 import React, { useEffect, useState } from "react";
 import { Translate } from "react-localize-redux";
 import styled from "styled-components";
 import { useFungibleTokensIncludingNEAR } from "../../hooks/fungibleTokensIncludingNEAR";
 import Container from "../common/styled/Container.css";
-import { currentToken, fetchByUSN, swapTokens } from "./helpers";
+import {
+    currentToken,
+    exchengeRateTranslation,
+    fetchByUSN,
+    swapTokens,
+} from "./helpers";
 import SwapTokenContainer from "./SwapTokenContainer";
 import { actions as tokensActions } from "../../redux/slices/tokens";
 import {
@@ -20,9 +23,9 @@ import SwapInfoContainer from "./SwapInfoContainer";
 import FormButton from "../common/FormButton";
 import { formatNearAmount } from "../common/balance/helpers";
 import { formatTokenAmount } from "../../utils/amounts";
-import { wallet } from "../../utils/wallet";
 import ImageContainer from "./ImageContainer";
 import TextInfoSuccess from "./TextInfoSuccess";
+import { useFetchByorSellUSN } from "../../hooks/fetchByorSellUSN";
 
 const { fetchTokens } = tokensActions;
 
@@ -86,8 +89,10 @@ const SwapPage = () => {
     const [from, setFrom] = useState(fungibleTokensList[0]);
     const [to, setTo] = useState(currentToken(fungibleTokensList, "USN"));
     const [inputValueFrom, setInputValueFrom] = useState(100);
-    const [slippPageValue, setSlippPageValue] = useState(1);
-    const [isSuccess, setSuccess] = useState(false);
+    const [slippPageValue, setSlippPageValue] = useState(2);
+
+    const { fetchByOrSell, isLoading, isError, isSuccess, setSuccess } =
+        useFetchByorSellUSN();
 
     const balance = balanceForError(from);
     const error = balance < +inputValueFrom;
@@ -151,10 +156,10 @@ const SwapPage = () => {
                     <div className="buttons-bottom-buttons">
                         <FormButton
                             type="submit"
-                            disabled={error || splpPageError}
+                            disabled={error || splpPageError || isLoading}
                             data-test-id="sendMoneyPageSubmitAmountButton"
                             onClick={() =>
-                                fetchByUSN(
+                                fetchByOrSell(
                                     accountId,
                                     miltiplier,
                                     +slippPageValue,
@@ -179,14 +184,23 @@ const SwapPage = () => {
             ) : (
                 <>
                     <ImageContainer />
-                    <TextInfoSuccess />
+                    <TextInfoSuccess
+                        valueFrom={inputValueFrom}
+                        valueTo={exchengeRateTranslation(
+                            to,
+                            +inputValueFrom,
+                            +miltiplier / 10000
+                        )}
+                        symbol={from?.onChainFTMetadata?.symbol}
+                    />
                     <div className="buttons-bottom-buttons">
                         <FormButton
                             type="submit"
                             disabled={error}
                             data-test-id="sendMoneyPageSubmitAmountButton"
+                            onClick={() => setSuccess(false)}
                         >
-                            <Translate id="button.continue" />
+                            <Translate id="button.backToSwap" />
                         </FormButton>
                         <FormButton
                             type="button"
@@ -194,7 +208,7 @@ const SwapPage = () => {
                             color="gray"
                             linkTo="/"
                         >
-                            <Translate id="button.cancel" />
+                            <Translate id="button.ToMaine" />
                         </FormButton>
                     </div>
                 </>
