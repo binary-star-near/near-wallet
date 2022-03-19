@@ -103,6 +103,8 @@ const SwapPage = () => {
         dispatch(fetchMultiplier());
     }, [dispatch]);
 
+    console.log("");
+
     return (
         <StyledContainer className="small-centered">
             {!isSuccess ? (
