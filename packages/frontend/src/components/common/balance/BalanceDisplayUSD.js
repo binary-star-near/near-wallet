@@ -2,15 +2,19 @@ import React from 'react';
 
 import { getRoundedBalanceInFiat, formatWithCommas } from './helpers';
 
+
 const BalanceDisplayUSD = ({
     amount,
     showAlmostEqualSignUSD = true,
     showSignUSD = true,
     showSymbolUSD = true,
-    nearTokenFiatValueUSD
+    nearTokenFiatValueUSD,
+    isNear = false,
+    decimals,
 }) => {
 
-    const roundedBalanceInUSD = getRoundedBalanceInFiat(amount, nearTokenFiatValueUSD);
+    const roundedBalanceInUSD = getRoundedBalanceInFiat(amount, nearTokenFiatValueUSD,isNear,
+        decimals);
     const USDSymbol = 'USD';
     const roundedBalanceInUSDIsBelowThreshold = roundedBalanceInUSD === '< $0.01';
 

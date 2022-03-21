@@ -2,7 +2,7 @@ import React from 'react';
 import { Translate } from 'react-localize-redux';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-
+import SwapIconTwoArrows from "../svg/SwapIconTwoArrows";
 import { Mixpanel } from '../../mixpanel/index';
 import HelpIcon from '../svg/HelpIcon';
 import UserIcon from '../svg/UserIcon';
@@ -92,6 +92,22 @@ const NavLinks = () => (
             <HelpIcon/>
             <Translate id='link.help'/>
         </a>
+        <NavLink
+            to="/swap-money"
+            activeClassName="selected"
+            onClick={() => Mixpanel.track("Click Account button on nav")}
+        >
+            <div>
+                <SwapIconTwoArrows
+                    width={"20"}
+                    height="16"
+                    color="#A2A2A8"
+                    margin="10px"
+                />
+            </div>
+
+            <Translate id="button.swap" />
+        </NavLink>
     </Container>
 );
 

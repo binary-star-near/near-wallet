@@ -63,6 +63,7 @@ import { SetupImplicitWithRouter } from './accounts/SetupImplicit';
 import { SetupSeedPhraseWithRouter } from './accounts/SetupSeedPhrase';
 import { EnableTwoFactor } from './accounts/two_factor/EnableTwoFactor';
 import { BuyNear } from './buy/BuyNear';
+import SwapPage from './Swap/SwapPage';
 import Footer from './common/Footer';
 import GlobalAlert from './common/GlobalAlert';
 import GuestLandingRoute from './common/GuestLandingRoute';
@@ -85,7 +86,7 @@ import { Wallet } from './wallet/Wallet';
 import '../index.css';
 
 const {
-    fetchTokenFiatValues
+    fetchTokenFiatValues,fetchTokenUSDNFiatValues
 } = tokenFiatValueActions;
 
 const {
@@ -133,6 +134,7 @@ class Routing extends Component {
         super(props);
 
         this.pollTokenFiatValue = null;
+        this.pollTokenFiatValueUSD = null;
 
         const languages = [
             { name: 'English', code: 'en' },
@@ -187,10 +189,12 @@ class Routing extends Component {
             handleClearUrl,
             router,
             fetchTokenFiatValues,
+            fetchTokenUSDNFiatValues,
             handleClearAlert
         } = this.props;
 
         fetchTokenFiatValues();
+        fetchTokenUSDNFiatValues();
         this.startPollingTokenFiatValue();
         handleRefreshUrl(router);
         refreshAccount();
@@ -224,21 +228,43 @@ class Routing extends Component {
     }
 
     startPollingTokenFiatValue = () => {
-        const { fetchTokenFiatValues } = this.props;
+        const { fetchTokenFiatValues, fetchTokenUSDNFiatValues } = this.props;
 
         const handlePollTokenFiatValue = async () => {
-            await fetchTokenFiatValues().catch(() => { });
+            await fetchTokenFiatValues().catch(() => {});
             if (this.pollTokenFiatValue) {
-                this.pollTokenFiatValue = setTimeout(() => handlePollTokenFiatValue(), 30000);
+                this.pollTokenFiatValue = setTimeout(
+                    () => handlePollTokenFiatValue(),
+                    30000
+                );
             }
         };
-        this.pollTokenFiatValue = setTimeout(() => handlePollTokenFiatValue(), 30000);
-    }
+        this.pollTokenFiatValue = setTimeout(
+            () => handlePollTokenFiatValue(),
+            30000
+        );
+
+        const handlePollTokenFiatValueUSDN = async () => {
+            await fetchTokenUSDNFiatValues().catch(() => {});
+            if (this.pollTokenFiatValueUSD) {
+                this.pollTokenFiatValueUSD = setTimeout(
+                    () => handlePollTokenFiatValueUSDN(),
+                    30000
+                );
+            }
+        };
+        this.pollTokenFiatValueUSD = setTimeout(
+            () => handlePollTokenFiatValueUSDN(),
+            30000
+        );
+    };
 
     stopPollingTokenFiatValue = () => {
         clearTimeout(this.pollTokenFiatValue);
+        clearTimeout(this.pollTokenFiatValueUSD);
         this.pollTokenFiatValue = null;
-    }
+        this.pollTokenFiatValueUSD = null;
+    };
 
     render() {
         const { search, query: { tab }, hash, pathname } = this.props.router.location;
@@ -516,6 +542,11 @@ class Routing extends Component {
                                 path='/buy'
                                 component={BuyNear}
                             />
+                             <PrivateRoute
+                                exact
+                                path="/swap-money"
+                                component={SwapPage}
+                            />
                             <Route
                                 exact
                                 path='/profile/:accountId'
@@ -574,6 +605,7 @@ const mapDispatchToProps = {
     promptTwoFactor,
     redirectTo,
     fetchTokenFiatValues,
+    fetchTokenUSDNFiatValues,
     handleClearAlert
 };
 
