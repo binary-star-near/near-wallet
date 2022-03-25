@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import { Redirect, Switch } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
 
-import { CREATE_IMPLICIT_ACCOUNT, IMPORT_ACCOUNT_WITH_LINK_V2 } from '../../../../features';
+import { CREATE_IMPLICIT_ACCOUNT, IMPORT_ACCOUNT_WITH_LINK_V2, CREATE_USN_CONTRACT } from '../../../../features';
 import TwoFactorVerifyModal from '../components/accounts/two_factor/TwoFactorVerifyModal';
 import { IS_MAINNET, PUBLIC_URL, SHOW_PRERELEASE_WARNING, DISABLE_CREATE_ACCOUNT } from '../config';
 import ExampleFlag from '../ExampleFlag';
@@ -542,11 +542,12 @@ class Routing extends Component {
                                 path='/buy'
                                 component={BuyNear}
                             />
-                             <PrivateRoute
+                            {CREATE_USN_CONTRACT &&    
+                            <PrivateRoute
                                 exact
                                 path="/swap-money"
                                 component={SwapPage}
-                            />
+                            />}
                             <Route
                                 exact
                                 path='/profile/:accountId'

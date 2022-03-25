@@ -1,12 +1,12 @@
 import { useMemo } from "react";
 
-export const useSplitFungibleTokens = (fungibleTokens) => {
+export const useSplitFungibleTokens = (fungibleTokens, contractName) => {
     const mainTokens = useMemo(
         () =>
             fungibleTokens.filter(
                 (el) =>
                     el.onChainFTMetadata.symbol === "NEAR" ||
-                    el.onChainFTMetadata.symbol === "USN"
+                    el.onChainFTMetadata.symbol === contractName
             ),
         [fungibleTokens]
     );
@@ -15,7 +15,7 @@ export const useSplitFungibleTokens = (fungibleTokens) => {
             fungibleTokens.filter(
                 (el) =>
                     el.onChainFTMetadata.symbol !== "NEAR" &&
-                    el.onChainFTMetadata.symbol !== "USN"
+                    el.onChainFTMetadata.symbol !== contractName
             ),
         [fungibleTokens]
     );

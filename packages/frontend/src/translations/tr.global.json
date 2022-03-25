@@ -1314,7 +1314,8 @@
     "success": "Başarılı",
     "sync": "Eşitle",
     "tokenBox": {
-        "priceUnavailable": "Fiyat Mevcut Değil"
+        "priceUnavailable": "Fiyat Mevcut Değil",
+        "swapTo": "İtibaren"
     },
     "topLevelAccounts": {
         "body": "Hesap adları, alan adlarına benzer. Sadece ${data} hesapları adınız.${data} gibi hesapları oluşturabilir, örn. sadece adınız.${data} uygulama adınız.${data}. Bu cüzdanda oluşturulan tüm hesaplar .${data} Üst Düzey Hesap kullanır (ÜDH). Hesap adları ve kendi ÜDH'nızı oluşturma hakkında daha fazla bilgi için <a rel='noopener noreferrer' href='https://docs.nearprotocol.com/docs/concepts/account'>docs</a>.",

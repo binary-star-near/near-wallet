@@ -22,7 +22,7 @@ const SwapContainer = styled.div`
     input {
         text-align: right;
         font-weight: 600;
-        padding: 0;
+        padding-right: 3px;
         height: auto;
         border: 0;
         background-color: white;
@@ -155,6 +155,7 @@ const SwapTokenContainer = ({
                 </div>
                 {setInputValueFrom ? (
                     <input
+                        autoFocus
                         value={value}
                         onChange={handelChange}
                         className={error ? "inputError" : ""}

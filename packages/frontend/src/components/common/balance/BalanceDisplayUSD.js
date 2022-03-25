@@ -11,6 +11,7 @@ const BalanceDisplayUSD = ({
     nearTokenFiatValueUSD,
     isNear = false,
     decimals,
+    totalAmount
 }) => {
 
     const roundedBalanceInUSD = getRoundedBalanceInFiat(amount, nearTokenFiatValueUSD,isNear,
@@ -27,7 +28,7 @@ const BalanceDisplayUSD = ({
                         {showSignUSD && <>$</>}
                     </>
                 }
-                {formatWithCommas(roundedBalanceInUSD)}
+                {totalAmount ? formatWithCommas(totalAmount) : formatWithCommas(roundedBalanceInUSD)}
                 {showSymbolUSD && ` ${USDSymbol}`}
             </>
         );

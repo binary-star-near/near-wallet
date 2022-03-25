@@ -21,6 +21,10 @@ import { formatTokenAmount } from "../../utils/amounts";
 import ImageContainer from "./ImageContainer";
 import TextInfoSuccess from "./TextInfoSuccess";
 import { useFetchByorSellUSN } from "../../hooks/fetchByorSellUSN";
+import { commission } from "./helpers"
+import { ACCOUNT_ID_SUFFIX } from "../../config/configFromEnvironment"
+import { handleSwapBycontractName, selectSwapBycontractName } from "../../redux/slices/swap";
+
 
 const { fetchTokens } = tokensActions;
 
@@ -81,12 +85,13 @@ const SwapPage = () => {
     const accountId = useSelector((state) => selectAccountId(state));
     const miltiplier = useSelector(selectMetadataSlice);
     const dispatch = useDispatch();
+    const swapContractValue = useSelector(selectSwapBycontractName)
     const [from, setFrom] = useState(fungibleTokensList[0]);
     const [to, setTo] = useState(currentToken(fungibleTokensList, "USN"));
-    const [inputValueFrom, setInputValueFrom] = useState(100);
+    const [inputValueFrom, setInputValueFrom] = useState(0);
     const [slippPageValue, setSlippPageValue] = useState(1);
-
-    const { fetchByOrSell, isLoading, isError, isSuccess, setSuccess } =
+    const com = commission(accountId, inputValueFrom, 500, miltiplier, from)
+    const { fetchByOrSell, isLoading, isSuccess, setSuccess } =
         useFetchByorSellUSN();
 
     const balance = balanceForError(from);
@@ -97,6 +102,16 @@ const SwapPage = () => {
         dispatch(fetchTokens({ accountId }));
         dispatch(fetchMultiplier());
     }, [dispatch]);
+
+    useEffect(() => {
+        if(swapContractValue && swapContractValue === "USN") {
+            setFrom(currentToken(fungibleTokensList, 'USN'));
+            setTo(fungibleTokensList[0]);
+        }
+        return () => dispatch(handleSwapBycontractName(""))
+    },[swapContractValue])
+
+   console.log("swapContractValue", swapContractValue);
 
     return (
         <StyledContainer className="small-centered">
@@ -118,15 +133,7 @@ const SwapPage = () => {
                     />
                     <div
                         className="iconSwap"
-                        onClick={() =>
-                            swapTokens(
-                                fungibleTokensList,
-                                from,
-                                setFrom,
-                                setTo,
-                                to
-                            )
-                        }
+                        onClick={() =>  swapTokens(fungibleTokensList,from,setFrom,setTo,to)} 
                     >
                         <SwapIconTwoArrows
                             width={"20"}

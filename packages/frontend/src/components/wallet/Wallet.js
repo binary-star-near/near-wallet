@@ -3,7 +3,7 @@ import { Translate } from 'react-localize-redux';
 import { useSelector, useDispatch } from 'react-redux';
 import { Textfit } from 'react-textfit';
 import styled from 'styled-components';
-import { CREATE_IMPLICIT_ACCOUNT } from '../../../../../features';
+import { CREATE_IMPLICIT_ACCOUNT,CREATE_USN_CONTRACT } from '../../../../../features';
 import { useFungibleTokensIncludingNEAR } from '../../hooks/fungibleTokensIncludingNEAR';
 import { Mixpanel } from '../../mixpanel/index';
 import { selectAccountId, selectBalance } from '../../redux/slices/account';
@@ -46,6 +46,7 @@ import ReleaseNotesModal from './ReleaseNotesModal';
 import Sidebar from './Sidebar';
 import Tokens from './Tokens';
 import { useSplitFungibleTokens } from '../../hooks/splitFungibleTokens';
+import { getTotalBalanceInFiat } from '../common/balance/helpers';
 
 const { fetchNFTs } = nftActions;
 const { fetchTokens } = tokensActions;
@@ -263,7 +264,8 @@ export function Wallet({ tab, setTab }) {
         useSelector((state) => selectTokensLoading(state, { accountId })) ||
         !balance?.total;
     const availableAccounts = useSelector(selectAvailableAccounts);
-    const slitedFungibleTokens = useSplitFungibleTokens(fungibleTokensList);
+    const splitedFungibleTokens = useSplitFungibleTokens(fungibleTokensList, "USN");
+    const totalAmount = getTotalBalanceInFiat(splitedFungibleTokens[0])
 
     useEffect(() => {
         if (accountId) {
@@ -322,9 +324,10 @@ export function Wallet({ tab, setTab }) {
                         <NFTs tokens={sortedNFTs} />
                     ) : (
                         <FungibleTokens
+                            totalAmount={totalAmount}
                             balance={balance}
                             tokensLoader={tokensLoader}
-                            fungibleTokens={slitedFungibleTokens}
+                            fungibleTokens={CREATE_USN_CONTRACT ? splitedFungibleTokens : fungibleTokensList}
                         />
                     )}
                 </div>
@@ -363,18 +366,20 @@ export function Wallet({ tab, setTab }) {
     );
 }
 
-const FungibleTokens = ({ balance, tokensLoader, fungibleTokens }) => {
+const FungibleTokens = ({ balance, tokensLoader, fungibleTokens, totalAmount }) => {
+    const currentFungibleTokens = CREATE_USN_CONTRACT ? fungibleTokens[0][0] : fungibleTokens[0]
     const availableBalanceIsZero = balance?.balanceAvailable === '0';
     const hideFungibleTokenSection =
         availableBalanceIsZero &&
         fungibleTokens?.length === 1 &&
-        fungibleTokens[0]?.onChainFTMetadata?.symbol === 'NEAR';
-
+        currentFungibleTokens?.onChainFTMetadata?.symbol === 'NEAR';
+    
     return (
         <>
             <div className='total-balance'>
                 <Textfit mode='single' max={48}>
                     <Balance
+                        totalAmount={CREATE_USN_CONTRACT ? totalAmount : false}
                         showBalanceInNEAR={false}
                         amount={balance?.balanceAvailable}
                         showAlmostEqualSignUSD={false}
@@ -410,7 +415,8 @@ const FungibleTokens = ({ balance, tokensLoader, fungibleTokens }) => {
                     </div>
                     <Translate id='button.receive' />
                 </FormButton>
-                <FormButton
+                {CREATE_USN_CONTRACT && 
+                 <FormButton
                     color='dark-gray'
                     linkTo='/swap-money'
                     trackingId='Click Receive on Wallet page'
@@ -420,7 +426,7 @@ const FungibleTokens = ({ balance, tokensLoader, fungibleTokens }) => {
                         <Swap />
                     </div>
                     <Translate id='button.swap' />
-                </FormButton>
+                </FormButton>}    
                 <FormButton
                     color='dark-gray'
                     linkTo='/buy'
@@ -445,7 +451,7 @@ const FungibleTokens = ({ balance, tokensLoader, fungibleTokens }) => {
                         </span>
                     </div>
                     <Tokens tokens={fungibleTokens[0]} />
-                    {fungibleTokens[1]?.length && (
+                    {CREATE_USN_CONTRACT && (
                         <>
                             <div className='sub-title tokens'>
                                 <span

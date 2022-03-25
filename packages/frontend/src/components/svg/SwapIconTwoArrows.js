@@ -14,7 +14,7 @@ const SwapIconTwoArrows = ({ color, width, height, margin }) => {
             xmlns="http://www.w3.org/2000/svg"
         >
             <g
-                fill="none"
+                fill={color}
                 fill-rule="evenodd"
                 stroke={stroke}
                 stroke-width="3.5"

@@ -33,7 +33,7 @@ function SwapInfoContainer({
                 slippPageValue={slippPageValue}
                 setSlippPageValue={setSlippPageValue}
             />
-            <SwapInfoItem leftText={"swap.pairPrice"} rightText={exchngeRate} />
+            <SwapInfoItem leftText={"swap.pairPrice"} rightText={`1 ${isNear ? 'NEAR': 'USN'} = ${isNear ? 1 * exchngeRate : 1 / exchngeRate} ${symbol}`} />
             <SwapInfoItem
                 leftText={"swap.ExpectedPrice"}
                 rightText={`${amount} ${token} = ${expectedPrice} ${symbol}`}

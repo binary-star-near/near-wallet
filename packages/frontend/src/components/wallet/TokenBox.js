@@ -3,11 +3,15 @@ import { Translate } from 'react-localize-redux';
 import styled from 'styled-components';
 
 import { EXPLORER_URL } from '../../config';
+import { CREATE_USN_CONTRACT } from '../../../../../features'
 import Balance from '../common/balance/Balance';
 import TokenIcon from '../send/components/TokenIcon';
 import Swap from './Swap';
 import TokenAmount from './TokenAmount';
 import { formatTokenAmount, removeTrailingZeros } from '../../utils/amounts';
+import { useDispatch } from 'react-redux';
+import { handleSwapBycontractName } from '../../redux/slices/swap';
+
 
 const FRAC_DIGITS = 5;
 
@@ -124,12 +128,15 @@ const StyledContainer = styled.div`
     }
 
     .balance {
-        /* margin-left: auto; */
+        margin-left: ${({IS_USN}) =>(IS_USN ? "none" : "auto")};
         font-size: 16px;
         font-weight: 600;
         color: #24272a;
         text-align: right;
         white-space: nowrap;
+        &.tokenAmount {
+            margin-left: auto !important;
+        }
 
         .fiat-amount {
             font-size: 14px;
@@ -173,18 +180,13 @@ const StyledContainer = styled.div`
 `;
 
 const TokenBox = ({ token, onClick }) => {
-    const withSymbol =
-        token.onChainFTMetadata?.symbol !== 'NEAR' ||
-        token.onChainFTMetadata?.symbol !== 'USN';
-
-    const currentClassName =
-        token.onChainFTMetadata?.symbol === 'NEAR' ||
-        token.onChainFTMetadata?.symbol === 'USN';
+    const dispatch = useDispatch()
     return (
         <StyledContainer
             className='token-box'
             onClick={onClick ? () => onClick(token) : null}
             data-test-id={`token-selection-${token.contractName || 'NEAR'}`}
+            IS_USN={CREATE_USN_CONTRACT}
         >
             <div style={{ display: 'flex', width: '100%' }}>
                 <div className='icon'>
@@ -234,25 +236,24 @@ const TokenBox = ({ token, onClick }) => {
                             amount={token.balance}
                             data-test-id='walletHomeNearBalance'
                             symbol={false}
+                            showSymbolNEAR={false}
                         />
                     </div>
                 ) : (
                     <TokenAmount
                         token={token}
-                        className={
-                            currentClassName ? 'balance' : 'balanceMargin'
-                        }
-                        withSymbol={withSymbol}
+                        className={token.onChainFTMetadata?.symbol  !== 'USN' && CREATE_USN_CONTRACT ? 'balance tokenAmount':'balance'}
+                        withSymbol={CREATE_USN_CONTRACT ? false : true}
                     />
                 )}
             </div>
-            {!onClick &&
+            {!onClick && CREATE_USN_CONTRACT &&
                 (token.onChainFTMetadata?.symbol === 'NEAR' ||
                     token.onChainFTMetadata?.symbol === 'USN') && (
                     <Swap
-                        currentToken={
-                            token.onChainFTMetadata?.symbol === 'NEAR'
-                        }
+                        currentToken={token.onChainFTMetadata?.symbol === 'NEAR'} 
+                        linkTo='/swap-money'
+                        onClick={() => dispatch(handleSwapBycontractName(token.onChainFTMetadata?.symbol === 'NEAR' ? 'USN' : 'NEAR'))}
                     />
                 )}
         </StyledContainer>

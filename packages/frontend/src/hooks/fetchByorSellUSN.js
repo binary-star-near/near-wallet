@@ -1,11 +1,14 @@
 import * as nearApiJs from "near-api-js";
 import { useState } from "react";
-import { async } from "regenerator-runtime";
+import { useDispatch } from "react-redux";
+import { showCustomAlert } from "../redux/actions/status";
 import { wallet } from "../utils/wallet";
 
-export const useFetchByorSellUSN = (accountId) => {
+const env = process.env.NEAR_WALLET_ENV === "development";
+
+export const useFetchByorSellUSN = () => {
+    const dispatch = useDispatch()
     const [isLoading, setIsLoading] = useState(false);
-    const [isError, setIsError] = useState("");
     const [isSuccess, setSuccess] = useState(false);
     const env = process.env.NEAR_WALLET_ENV === "development";
     const contractName = env ? "usdn.testnet" : "usn";
@@ -31,7 +34,7 @@ export const useFetchByorSellUSN = (accountId) => {
         try {
             setIsLoading(true);
             if (symbol === "NEAR") {
-                await usnContract.buy({
+               const result = await usnContract.buy({
                     args: {
                         expected: {
                             multiplier,
@@ -44,8 +47,12 @@ export const useFetchByorSellUSN = (accountId) => {
                     amount: `${amount + new Array(24).fill(0).join("")}`,
                     gas: 50000000000000,
                 });
+
+                if(result) {
+                    setSuccess(true);
+                }
             } else {
-                await usnContract.sell({
+              const result = await usnContract.sell({
                     args: {
                         amount: `${amount + new Array(18).fill(0).join("")}`,
                         expected: {
@@ -59,16 +66,24 @@ export const useFetchByorSellUSN = (accountId) => {
                     amount: 1,
                     gas: 100000000000000,
                 });
+                if(result) {
+                    setSuccess(true);
+                }
             }
         } catch (error) {
-            setIsError(error);
+            dispatch(showCustomAlert({
+                errorMessage: error.message,
+                success: false,
+                messageCodeHeader: 'error',
+            }));
+            if (error) {
+                setSuccess(false);
+            } 
+           
         } finally {
-            if (!isError) {
-                setSuccess(true);
-            }
             setIsLoading(false);
         }
     };
 
-    return { fetchByOrSell, isLoading, isError, isSuccess, setSuccess };
+    return { fetchByOrSell, isLoading, isSuccess, setSuccess };
 };

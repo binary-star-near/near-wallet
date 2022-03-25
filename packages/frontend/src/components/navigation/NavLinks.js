@@ -1,4 +1,5 @@
 import React from 'react';
+import { CREATE_USN_CONTRACT } from '../../../../../features'
 import { Translate } from 'react-localize-redux';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
@@ -92,6 +93,7 @@ const NavLinks = () => (
             <HelpIcon/>
             <Translate id='link.help'/>
         </a>
+        {CREATE_USN_CONTRACT && 
         <NavLink
             to="/swap-money"
             activeClassName="selected"
@@ -107,7 +109,7 @@ const NavLinks = () => (
             </div>
 
             <Translate id="button.swap" />
-        </NavLink>
+        </NavLink>}
     </Container>
 );
 
