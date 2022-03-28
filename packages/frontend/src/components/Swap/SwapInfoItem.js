@@ -1,6 +1,7 @@
 import React from "react";
 import { Translate } from "react-localize-redux";
 import styled from "styled-components";
+import classNames from "../../utils/classNames";
 
 const StyledInfoItem = styled.div`
     width: 100%;
@@ -8,7 +9,7 @@ const StyledInfoItem = styled.div`
     justify-content: space-between;
     align-items: center;
     position: relative;
-
+        
     > span {
         position: absolute;
         top: 12px;
@@ -49,6 +50,37 @@ const StyledInfoItem = styled.div`
         line-height: 32px;
         text-align: right;
         color: #252729;
+        
+        .dots {
+            :after {
+                position: absolute;
+                right: 11px;
+                top: -3.5px;
+                content: '.';
+                animation: link 1s steps(5, end) infinite;
+                @keyframes link {
+                    0%,
+                    20% {
+                        color: rgba(0, 0, 0, 0);
+                        text-shadow: 0.3em 0 0 rgba(0, 0, 0, 0),
+                            0.6em 0 0 rgba(0, 0, 0, 0);
+                    }
+                    40% {
+                        color: #24272a;
+                        text-shadow: 0.3em 0 0 rgba(0, 0, 0, 0),
+                            0.6em 0 0 rgba(0, 0, 0, 0);
+                    }
+                    60% {
+                        text-shadow: 0.3em 0 0 #24272a,
+                            0.6em 0 0 rgba(0, 0, 0, 0);
+                    }
+                    80%,
+                    100% {
+                        text-shadow: 0.3em 0 0 #24272a, 0.6em 0 0 #24272a;
+                    }
+                }
+            }
+        }
     }
     .slipPageError {
         color: #ec6563;
@@ -62,9 +94,11 @@ function SwapInfoItem({
     slippPageValue,
     setSlippPageValue,
     slipPageError,
+    tradinFree={tradinFree},
+    isDots =false
 }) {
     return (
-        <StyledInfoItem>
+        <StyledInfoItem >
             <div className="left_text">
                 <Translate id={leftText} />
             </div>
@@ -85,7 +119,15 @@ function SwapInfoItem({
                     <span>%</span>
                 </>
             ) : (
-                <div className="right_text">{`${rightText}`}</div>
+                <div className="right_text">
+                    <div
+                    className={classNames({
+                        dots: isDots,
+                    })}
+                    >
+                     {rightText && `${rightText}`}
+                    </div>
+                </div>
             )}
         </StyledInfoItem>
     );

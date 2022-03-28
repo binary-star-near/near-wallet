@@ -90,7 +90,7 @@ const SwapPage = () => {
     const [to, setTo] = useState(currentToken(fungibleTokensList, "USN"));
     const [inputValueFrom, setInputValueFrom] = useState(0);
     const [slippPageValue, setSlippPageValue] = useState(1);
-    const com = commission(accountId, inputValueFrom, 500, miltiplier, from)
+    const {commissionFree, isLoadingCommission} = commission(accountId, inputValueFrom, 250, +miltiplier, from)
     const { fetchByOrSell, isLoading, isSuccess, setSuccess } =
         useFetchByorSellUSN();
 
@@ -111,7 +111,7 @@ const SwapPage = () => {
         return () => dispatch(handleSwapBycontractName(""))
     },[swapContractValue])
 
-   console.log("swapContractValue", swapContractValue);
+   console.log("com", commissionFree);
 
     return (
         <StyledContainer className="small-centered">
@@ -154,6 +154,8 @@ const SwapPage = () => {
                         token={from?.onChainFTMetadata?.symbol}
                         exchngeRate={+miltiplier / 10000}
                         amount={inputValueFrom}
+                        tradinFree={commissionFree}
+                        isLoading={isLoadingCommission}
                     />
                     <div className="buttons-bottom-buttons">
                         <FormButton

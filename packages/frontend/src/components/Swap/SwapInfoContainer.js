@@ -17,6 +17,8 @@ function SwapInfoContainer({
     setSlippPageValue,
     slippPageValue,
     slipPageError,
+    tradinFree,
+    isLoading
 }) {
     const isNear = token === "NEAR";
     const expectedPrice = isNear
@@ -39,17 +41,25 @@ function SwapInfoContainer({
                 rightText={`${amount} ${token} = ${expectedPrice} ${symbol}`}
             />
             <SwapInfoItem
+                isDots={isLoading}
+                tradinFree={tradinFree}
                 leftText={"swap.TradingFee"}
-                rightText={
-                    tradingFree(symbol, amount, exchngeRate) + ` ${symbol}`
-                }
+                rightText={!amount 
+                    ? `- ${symbol}`
+                    : tradinFree
+                    ? tradinFree + ` ${symbol}`
+                    : null}
             />
             <SwapInfoItem
+                isDots={isLoading}
+                tradinFree={tradinFree}
                 leftText={"swap.MinimumReceived"}
-                rightText={
-                    MinimumReceived(symbol, amount, exchngeRate) -
-                    tradingFree(symbol, amount, exchngeRate) +
-                    ` ${symbol}`
+                rightText={!amount 
+                    ? `- ${symbol}`
+                    : tradinFree 
+                    ? MinimumReceived(symbol, amount, exchngeRate) -
+                    tradinFree + ` ${symbol}`
+                    : null
                 }
             />
         </StyledContainer>

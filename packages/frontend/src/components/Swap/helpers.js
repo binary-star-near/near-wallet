@@ -1,5 +1,6 @@
 import * as nearApiJs from 'near-api-js';
 import { useEffect, useState } from 'react';
+import { async } from 'regenerator-runtime';
 import { wallet } from '../../utils/wallet';
 
 const env = process.env.NEAR_WALLET_ENV === 'development';
@@ -53,7 +54,7 @@ const useDebounce = (value,delay) => {
 
 const roundeUSNExchange = (amount,exchangeRate) => {
    const cuurrentExchangeRate =  +exchangeRate / 10000
-   console.log("cuurrentExchangeRate", amount * cuurrentExchangeRate);
+
    return Math.ceil(amount * cuurrentExchangeRate)
 }
 
@@ -61,6 +62,7 @@ async function fetchCommissiom (accountId,amount,exchangeRate,token) {
     const contractName = env ? 'usdn.testnet' : 'usn';
     const currentTooken = token?.onChainFTMetadata?.symbol === 'NEAR'
     const formatUSN = new Array(18).fill(0).join('')
+    const cuurrentExchangeRate =  +exchangeRate / 10000
     const usnMethods = {
         viewMethods: ['version', 'name', 'symbol', 'decimals', 'ft_balance_of'],
         changeMethods: ['buy', 'sell','spread'],
@@ -72,24 +74,30 @@ async function fetchCommissiom (accountId,amount,exchangeRate,token) {
         usnMethods
     );
     const USNamount = `${currentTooken ? roundeUSNExchange(amount,exchangeRate) + formatUSN: amount + formatUSN}`
-    console.log("USNamount",USNamount);
-    const result = await usnContract.spread({ amount:USNamount })
+    const result = await usnContract.spread({ amount:USNamount }) / 1000000
 
-    return result / 1000000
+    return currentTooken ? (cuurrentExchangeRate * amount) * result : (amount / cuurrentExchangeRate ) * result 
 }
 
 export const commission = (accountId,amount,delay,exchangeRate,token) => {
     const [commissionFree,setCommissionFree] = useState('')
+    const [isLoadingCommission,setIsLoadingCommission] = useState(false)
     const debounceValue = useDebounce(amount,delay)
 
   
     useEffect(() => {
-        if(debounceValue) {
-            fetchCommissiom(accountId,debounceValue,exchangeRate,token).then(res => setCommissionFree(res))
+        const getCommission = async () => {
+            if(debounceValue) {
+                setIsLoadingCommission(true)
+                await fetchCommissiom(accountId,debounceValue,exchangeRate,token).then(res => setCommissionFree(res))
+                setIsLoadingCommission(false)
+            }
         }
+        
+        getCommission()
        
         return () => setCommissionFree('')
     },[debounceValue,exchangeRate,token])
     
-    return commissionFree
+    return {commissionFree, isLoadingCommission}
 }
