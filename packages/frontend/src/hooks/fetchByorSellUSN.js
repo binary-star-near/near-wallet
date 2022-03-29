@@ -9,7 +9,7 @@ const env = process.env.NEAR_WALLET_ENV === "development";
 export const useFetchByorSellUSN = () => {
     const dispatch = useDispatch()
     const [isLoading, setIsLoading] = useState(false);
-    const [isSuccess, setSuccess] = useState(false);
+    // const [isSuccess, setSuccess] = useState(false);
     const env = process.env.NEAR_WALLET_ENV === "development";
     const contractName = env ? "usdn.testnet" : "usn";
 
@@ -31,59 +31,53 @@ export const useFetchByorSellUSN = () => {
             contractName,
             usnMethods
         );
-        try {
-            setIsLoading(true);
-            if (symbol === "NEAR") {
-               const result = await usnContract.buy({
-                    args: {
-                        expected: {
-                            multiplier,
-                            slippage: `${Math.round(
-                                (multiplier / 100) * slippage
-                            )}`,
-                            decimals: 28,
-                        },
+       
+        if (symbol === "NEAR") {
+            await usnContract.buy({
+                args: {
+                    expected: {
+                        multiplier,
+                        slippage: `${Math.round(
+                            (multiplier / 100) * slippage
+                        )}`,
+                        decimals: 28,
                     },
-                    amount: `${amount + new Array(24).fill(0).join("")}`,
-                    gas: 50000000000000,
-                });
-
-                if(result) {
-                    setSuccess(true);
-                }
-            } else {
-              const result = await usnContract.sell({
-                    args: {
-                        amount: `${amount + new Array(18).fill(0).join("")}`,
-                        expected: {
-                            multiplier,
-                            slippage: `${Math.round(
-                                (multiplier / 100) * slippage
-                            )}`,
-                            decimals: 28,
-                        },
-                    },
-                    amount: 1,
-                    gas: 100000000000000,
-                });
-                if(result) {
-                    setSuccess(true);
-                }
-            }
-        } catch (error) {
-            dispatch(showCustomAlert({
-                errorMessage: error.message,
-                success: false,
-                messageCodeHeader: 'error',
-            }));
-            if (error) {
-                setSuccess(false);
-            } 
+                },
+                amount: `${amount + new Array(24).fill(0).join("")}`,
+                gas: 50000000000000,
+            });
            
-        } finally {
-            setIsLoading(false);
+        } else {
+           await usnContract.sell({
+                args: {
+                    amount: `${amount + new Array(18).fill(0).join("")}`,
+                    expected: {
+                        multiplier,
+                        slippage: `${Math.round(
+                            (multiplier / 100) * slippage
+                        )}`,
+                        decimals: 28,
+                    },
+                },
+                amount: 1,
+                gas: 100000000000000,
+            });
         }
+        
+        //  catch (error) {
+        //     dispatch(showCustomAlert({
+        //         errorMessage: error.message,
+        //         success: false,
+        //         messageCodeHeader: 'error',
+        //     }));
+        //     if (error) {
+        //         setSuccess(false);
+        //     } 
+           
+        // } finally {
+        //     setIsLoading(false);
+        // }
     };
 
-    return { fetchByOrSell, isLoading, isSuccess, setSuccess };
+    return { fetchByOrSell, isLoading, setIsLoading};
 };

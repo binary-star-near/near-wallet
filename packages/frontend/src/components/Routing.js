@@ -63,7 +63,7 @@ import { SetupImplicitWithRouter } from './accounts/SetupImplicit';
 import { SetupSeedPhraseWithRouter } from './accounts/SetupSeedPhrase';
 import { EnableTwoFactor } from './accounts/two_factor/EnableTwoFactor';
 import { BuyNear } from './buy/BuyNear';
-import SwapPage from './Swap/SwapPage';
+import SwapContainerWrapper from './Swap/SwapContainerWrapper';
 import Footer from './common/Footer';
 import GlobalAlert from './common/GlobalAlert';
 import GuestLandingRoute from './common/GuestLandingRoute';
@@ -546,7 +546,7 @@ class Routing extends Component {
                             <PrivateRoute
                                 exact
                                 path="/swap-money"
-                                component={SwapPage}
+                                component={SwapContainerWrapper}
                             />}
                             <Route
                                 exact
