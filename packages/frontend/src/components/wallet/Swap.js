@@ -18,24 +18,23 @@ const StyledContainer = styled.div`
         margin-left: 10px;
         font-size: 14px;
         font-weight: 600;
-        color:${({currentToken}) => (currentToken ? '#24272a' : '#b7b7b7')};
+        color:${({disable}) => (!disable ? '#24272a' : '#b7b7b7')};
     }
 `;
 
-const Swap = ({ currentToken, onClick, linkTo , history}) => {
+const Swap = ({ disable, onClick, linkTo , history, symbol}) => {
     return (
         <>
         <StyledContainer 
-            currentToken={currentToken} 
+            disable={disable} 
             onClick={(e) => {
-                onClick && onClick(e);
+                onClick && !disable && onClick(e);
                 linkTo && history.push(linkTo);
                 
             }}>
-                <SwapIconTwoArrows color={currentToken ? '#000' : '#b7b7b7'}/>
+                <SwapIconTwoArrows color={!disable ? '#000' : '#b7b7b7'}/>
                 <div className='swap'>
-                    {/* <div>Swap</div> */}
-                    <div><Translate id='tokenBox.swapTo'/> {!currentToken ? `NEAR` : 'USN'}</div>
+                    <div><Translate id='tokenBox.swapTo'/> {!symbol ? `NEAR` : 'USN'}</div>
                 </div>
         </StyledContainer>
         </>

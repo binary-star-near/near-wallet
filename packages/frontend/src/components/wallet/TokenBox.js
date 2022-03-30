@@ -76,7 +76,8 @@ const StyledContainer = styled.div`
         align-items: flex-start;
         margin-left: 14px;
         display: block;
-        min-width: ${({IS_USN}) =>(IS_USN ? '50px' : 0)};
+        min-width: ${({IS_USN}) =>(IS_USN ? '55px' : 0)};
+        margin-right: ${({IS_USN}) =>(IS_USN ? '25px' : 0)};
 
         .symbol {
             font-weight: 700;
@@ -251,8 +252,9 @@ const TokenBox = ({ token, onClick }) => {
                 (token.onChainFTMetadata?.symbol === 'NEAR' ||
                     token.onChainFTMetadata?.symbol === 'USN') && (
                     <Swap
-                        currentToken={token.onChainFTMetadata?.symbol === 'NEAR'} 
-                        linkTo='/swap-money'
+                        symbol={token.onChainFTMetadata?.symbol === 'NEAR'}
+                        disable={!token.balance || token.balance === '0'} 
+                        linkTo={!token.balance || token.balance === '0' ? false : '/swap-money'}
                         onClick={() => dispatch(handleSwapBycontractName(token.onChainFTMetadata?.symbol === 'NEAR' ? 'USN' : 'NEAR'))}
                     />
                 )}
