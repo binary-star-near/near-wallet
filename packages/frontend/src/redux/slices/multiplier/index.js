@@ -1,8 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { wallet } from "../../../utils/wallet";
 import { createSelector } from "reselect";
+import { ACCOUNT_ID_SUFFIX } from "../../../config"
 
-const envDev = process.env.NEAR_WALLET_ENV === "development";
+
 
 const SLICE_NAME = "multiplier";
 
@@ -18,9 +19,7 @@ export const fetchMultiplier = createAsyncThunk(
                 "query",
                 {
                     request_type: "call_function",
-                    account_id: envDev
-                        ? "priceoracle.testnet"
-                        : "priceoracle.near",
+                    account_id: `priceoracle.${ACCOUNT_ID_SUFFIX}`,
                     method_name: "get_price_data",
                     args_base64: "eyJhc3NldF9pZHMiOiBbIndyYXAudGVzdG5ldCJdfQ==",
                     finality: "final",

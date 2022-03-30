@@ -76,7 +76,7 @@ const StyledContainer = styled.div`
         align-items: flex-start;
         margin-left: 14px;
         display: block;
-        min-width: 0;
+        min-width: ${({IS_USN}) =>(IS_USN ? '50px' : 0)};
 
         .symbol {
             font-weight: 700;
@@ -115,7 +115,7 @@ const StyledContainer = styled.div`
         font-size: 16px;
         font-weight: 600;
         color: #24272a;
-        text-align: right;
+        text-align:${({IS_USN}) =>(IS_USN ? 'left' : 'right')};
         white-space: nowrap;
 
         .fiat-amount {
@@ -128,11 +128,11 @@ const StyledContainer = styled.div`
     }
 
     .balance {
-        margin-left: ${({IS_USN}) =>(IS_USN ? "none" : "auto")};
+        margin-left: ${({IS_USN}) =>(IS_USN ? 0 : 'auto')};
         font-size: 16px;
         font-weight: 600;
         color: #24272a;
-        text-align: right;
+        text-align: ${({IS_USN}) =>(IS_USN ? 'left' : 'right')};
         white-space: nowrap;
         &.tokenAmount {
             margin-left: auto !important;

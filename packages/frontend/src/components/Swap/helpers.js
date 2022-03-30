@@ -1,9 +1,8 @@
 import * as nearApiJs from 'near-api-js';
 import { useEffect, useState } from 'react';
-import { async } from 'regenerator-runtime';
 import { wallet } from '../../utils/wallet';
+import { IS_MAINNET } from '../../config';
 
-const env = process.env.NEAR_WALLET_ENV === 'development';
 
 export const currentToken = (tokens, value) => {
     return tokens.find((el) => el.onChainFTMetadata.symbol === value);
@@ -59,7 +58,7 @@ const roundeUSNExchange = (amount,exchangeRate) => {
 }
 
 async function fetchCommissiom (accountId,amount,exchangeRate,token) {
-    const contractName = env ? 'usdn.testnet' : 'usn';
+    const contractName = !IS_MAINNET ? 'usdn.testnet' : 'usn';
     const currentTooken = token?.onChainFTMetadata?.symbol === 'NEAR'
     const formatUSN = new Array(18).fill(0).join('')
     const cuurrentExchangeRate =  +exchangeRate / 10000

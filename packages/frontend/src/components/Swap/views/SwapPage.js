@@ -28,7 +28,7 @@ const SwapPage = ({
     onClickContinue,
     onSwap
 }) => {
-    const {commissionFree, isLoadingCommission} = commission(accountId, inputValueFrom, 250, +miltiplier, from)
+    const {commissionFree, isLoadingCommission} = commission(accountId, inputValueFrom, 500, +miltiplier, from)
 
     const balance = balanceForError(from);
     const error = balance < +inputValueFrom;

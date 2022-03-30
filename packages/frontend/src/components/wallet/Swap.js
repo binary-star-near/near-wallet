@@ -7,6 +7,7 @@ import SwapIconTwoArrows from '../svg/SwapIconTwoArrows';
 const StyledContainer = styled.div`
     display: flex;
     align-items: center;
+    min-width: 85px;
     cursor: pointer;
     svg {
         margin-top: 4px;

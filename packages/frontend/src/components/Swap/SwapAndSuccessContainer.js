@@ -77,13 +77,11 @@ const SwapAndSuccessContainer = ({
 
     useEffect(() => {
         if(!swapContractValue) {
-            console.log('----------------------');
             setFrom(currentToken(fungibleTokensList, from?.onChainFTMetadata?.symbol));
-            setTo(currentToken(fungibleTokensList, to?.onChainFTMetadata?.symbol));
+            setTo(currentToken(fungibleTokensList, to?.onChainFTMetadata?.symbol || 'USN'));
         } 
         
-        if(swapContractValue && swapContractValue === 'USN') {
-            console.log('-----USN-----------');
+        if(swapContractValue && swapContractValue === 'NEAR') {
             setFrom(currentToken(fungibleTokensList, 'USN'));
             setTo(fungibleTokensList[0]);
         } 
@@ -93,7 +91,6 @@ const SwapAndSuccessContainer = ({
     useEffect(() => {
         return () => dispatch(handleSwapBycontractName(''))
     },[dispatch])
-
 
    const getCurrentViewComponent = (activeView) => {
     switch (activeView) {

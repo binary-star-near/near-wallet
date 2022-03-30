@@ -2,15 +2,15 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import BN from 'bn.js';
 import set from 'lodash.set';
 import { createSelector } from 'reselect';
-
-import { WHITELISTED_CONTRACTS } from '../../../config';
+import { CREATE_USN_CONTRACT } from '../../../../../../features'
+import { WHITELISTED_CONTRACTS, IS_MAINNET} from '../../../config';
 import FungibleTokens from '../../../services/FungibleTokens';
 import handleAsyncThunkStatus from '../../reducerStatus/handleAsyncThunkStatus';
 import initialStatusState from '../../reducerStatus/initialState/initialStatusState';
 import createParameterSelector from '../createParameterSelector';
 import { selectUSDNTokenFiatValueUSD } from '../tokenFiatValues';
 
-const envDev = process.env.NEAR_WALLET_ENV === 'development';
+const currentContractName = !IS_MAINNET ? 'usdn.testnet': 'usn'
 
 const SLICE_NAME = 'tokens';
 
@@ -77,8 +77,8 @@ const fetchTokens = createAsyncThunk(
             ]),
         ];
 
-        if (!likelyContracts.includes(envDev ? 'usdn.testnet' : 'usn')) {
-            likelyContracts.push(envDev ? 'usdn.testnet' : 'usn');
+        if (!likelyContracts.includes(currentContractName) && CREATE_USN_CONTRACT) {
+            likelyContracts.push(currentContractName);
         }
 
         await Promise.all(
@@ -257,7 +257,7 @@ export const selectTokensWithMetadataForAccountId = createSelector(
                 balance,
                 onChainFTMetadata: allContractMetadata[contractName] || {},
                 coingeckoMetadata:
-                    contractName === 'usdn.testnet' ? { usd } : {},
+                    contractName === currentContractName ? { usd } : {},
             }))
 );
 

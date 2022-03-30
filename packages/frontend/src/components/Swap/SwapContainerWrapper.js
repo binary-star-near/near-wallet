@@ -10,8 +10,7 @@ import SwapAndSuccessContainer from './SwapAndSuccessContainer';
 import { useFetchByorSellUSN } from '../../hooks/fetchByorSellUSN';
 import { showCustomAlert } from '../../redux/actions/status';
 import { refreshAccount } from '../../redux/actions/account';
-import { parseTokenAmount } from '../../utils/amounts';
-import { getRoundedBalanceInFiat } from '../common/balance/helpers';
+
 
 
 const { fetchTokens } = tokensActions;
@@ -27,9 +26,13 @@ const SwapContainerWrapper = () => {
         
 
     useEffect(() => {
+        if(!accountId) {
+            return;
+        }
+
         dispatch(fetchTokens({ accountId }));
         dispatch(fetchMultiplier());
-    }, [dispatch]);
+    }, [accountId]);
 
   return (
     <SwapAndSuccessContainer
