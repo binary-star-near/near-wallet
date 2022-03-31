@@ -127,7 +127,10 @@ const SwapAndSuccessContainer = ({
                     symbol={from.onChainFTMetadata?.symbol}
                     to={to}
                     miltiplier={miltiplier}
-                    handleBackToSwap={handleBackToSwap}
+                    handleBackToSwap={async () => {
+                       await handleBackToSwap();
+                        setInputValueFrom(0)
+                    }}
                 />
             );
     

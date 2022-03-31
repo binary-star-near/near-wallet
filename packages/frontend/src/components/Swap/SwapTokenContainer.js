@@ -155,6 +155,7 @@ const SwapTokenContainer = ({
                 </div>
                 {setInputValueFrom ? (
                     <input
+                        type="number"
                         autoFocus
                         value={value}
                         onChange={handelChange}

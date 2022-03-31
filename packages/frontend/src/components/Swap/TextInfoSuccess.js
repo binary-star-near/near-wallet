@@ -24,4 +24,6 @@ const TextInfoSuccess = ({ valueFrom, valueTo, symbol }) => {
     );
 };
 
-export default TextInfoSuccess;
+const comparisonFn = (prev, next) => prev.valueTo !== next.valueTo
+
+export default React.memo(TextInfoSuccess, comparisonFn);

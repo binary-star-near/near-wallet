@@ -47,6 +47,7 @@ const SwapPage = ({
             setInputValueFrom={setInputValueFrom}
         />
         <AvailableToSwap
+            onClick={(balance) => setInputValueFrom(balance)}
             balance={from?.balance}
             symbol={from?.onChainFTMetadata?.symbol}
             decimals={from?.onChainFTMetadata?.decimals}

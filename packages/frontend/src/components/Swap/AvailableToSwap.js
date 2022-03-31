@@ -17,15 +17,16 @@ const StyledAvailableContainer = styled.div`
 
     span {
         color: green;
+        cursor: pointer;
     }
 `;
 
-function AvailableToSwap({ balance, symbol, decimals }) {
+function AvailableToSwap({ balance, symbol, decimals, onClick }) {
     const amountoShow = balance && formatNearAmount(balance);
     return (
         <StyledAvailableContainer>
             <Translate id="swap.AvailableToSwap" />{" "}
-            <span>
+            <span onClick={() => onClick(symbol === "NEAR" ? amountoShow : formatTokenAmount(balance, decimals))}>
                 {balance ? (
                     <>
                         {" "}

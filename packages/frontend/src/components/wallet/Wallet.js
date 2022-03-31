@@ -446,9 +446,11 @@ const FungibleTokens = ({ balance, tokensLoader, fungibleTokens, totalAmount }) 
                         <span className={classNames({ dots: tokensLoader })}>
                             <Translate id='wallet.yourPortfolio' />
                         </span>
-                        <span>
-                            <Translate id='wallet.tokenBalance' />
-                        </span>
+                        {!CREATE_USN_CONTRACT &&
+                            <span>
+                                <Translate id='wallet.tokenBalance' />
+                            </span>
+                        }  
                     </div>
                     <Tokens tokens={fungibleTokens[0]} />
                     {CREATE_USN_CONTRACT && (
