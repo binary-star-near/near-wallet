@@ -1,7 +1,41 @@
 import * as nearApiJs from "near-api-js";
 import { useState } from "react";
 import { IS_MAINNET } from "../config";
+import { parseTokenAmount } from "../utils/amounts";
 import { wallet } from "../utils/wallet";
+
+const setArgsUSNContractBuy = (multiplier, slippage, amount) => {
+    return {
+        args: {
+            expected: {
+                multiplier,
+                slippage: `${Math.round(
+                    (multiplier / 100) * slippage
+                )}`,
+                decimals: 28,
+            },
+        },
+        amount: parseTokenAmount(amount * 10 ** 24, 0),
+        gas: 50000000000000,
+    }
+}
+
+const setArgsUSNContractSell = (amount, multiplier, slippage) => {
+    return {
+        args: {
+            amount: parseTokenAmount(amount * 10 ** 18, 0),
+            expected: {
+                multiplier,
+                slippage: `${Math.round(
+                    (multiplier / 100) * slippage
+                )}`,
+                decimals: 28,
+            },
+        },
+        amount: 1,
+        gas: 100000000000000,
+    }
+}
 
 export const useFetchByorSellUSN = () => {
     const [isLoading, setIsLoading] = useState(false);
@@ -26,35 +60,10 @@ export const useFetchByorSellUSN = () => {
         );
        
         if (symbol === "NEAR") {
-            await usnContract.buy({
-                args: {
-                    expected: {
-                        multiplier,
-                        slippage: `${Math.round(
-                            (multiplier / 100) * slippage
-                        )}`,
-                        decimals: 28,
-                    },
-                },
-                amount: `${amount + new Array(24).fill(0).join("")}`,
-                gas: 50000000000000,
-            });
+            await usnContract.buy(setArgsUSNContractBuy(multiplier, slippage, amount));
            
         } else {
-           await usnContract.sell({
-                args: {
-                    amount: `${amount + new Array(18).fill(0).join("")}`,
-                    expected: {
-                        multiplier,
-                        slippage: `${Math.round(
-                            (multiplier / 100) * slippage
-                        )}`,
-                        decimals: 28,
-                    },
-                },
-                amount: 1,
-                gas: 100000000000000,
-            });
+           await usnContract.sell(setArgsUSNContractSell(amount, multiplier, slippage));
         }
     };
 

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Translate } from 'react-localize-redux'
 import { formatTokenAmount } from '../../../utils/amounts'
 import { formatNearAmount } from '../../common/balance/helpers'
@@ -28,7 +28,8 @@ const SwapPage = ({
     onClickContinue,
     onSwap
 }) => {
-    const {commissionFree, isLoadingCommission} = commission(accountId, inputValueFrom, 500, +miltiplier, from)
+    const [isSwaped, setIsSwaped] = useState(false)
+    const {commissionFree, isLoadingCommission} = commission(accountId, inputValueFrom, 500, +miltiplier, from, isSwaped)
 
     const balance = balanceForError(from);
     const error = balance < +inputValueFrom;
@@ -52,7 +53,7 @@ const SwapPage = ({
         />
         <div
             className="iconSwap"
-            onClick={onSwap} 
+            onClick={() => {onSwap(); setIsSwaped(prev => !prev)}} 
         >
             <SwapIconTwoArrows
                 width={"20"}

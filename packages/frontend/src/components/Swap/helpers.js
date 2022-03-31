@@ -2,6 +2,7 @@ import * as nearApiJs from 'near-api-js';
 import { useEffect, useState } from 'react';
 import { wallet } from '../../utils/wallet';
 import { IS_MAINNET } from '../../config';
+import { parseTokenAmount } from '../../utils/amounts';
 
 
 export const currentToken = (tokens, value) => {
@@ -54,13 +55,12 @@ const useDebounce = (value,delay) => {
 const roundeUSNExchange = (amount,exchangeRate) => {
    const cuurrentExchangeRate =  +exchangeRate / 10000
 
-   return Math.ceil(amount * cuurrentExchangeRate)
+   return amount * cuurrentExchangeRate
 }
 
 async function fetchCommissiom (accountId,amount,exchangeRate,token) {
     const contractName = !IS_MAINNET ? 'usdn.testnet' : 'usn';
     const currentTooken = token?.onChainFTMetadata?.symbol === 'NEAR'
-    const formatUSN = new Array(18).fill(0).join('')
     const cuurrentExchangeRate =  +exchangeRate / 10000
     const usnMethods = {
         viewMethods: ['version', 'name', 'symbol', 'decimals', 'ft_balance_of'],
@@ -72,13 +72,13 @@ async function fetchCommissiom (accountId,amount,exchangeRate,token) {
         contractName,
         usnMethods
     );
-    const USNamount = `${currentTooken ? roundeUSNExchange(amount,exchangeRate) + formatUSN: amount + formatUSN}`
+    const USNamount = `${currentTooken ? parseTokenAmount(roundeUSNExchange(amount,exchangeRate) * 10 ** 18, 0) : parseTokenAmount(amount * 10 ** 18, 0)}`
     const result = await usnContract.spread({ amount:USNamount }) / 1000000
 
     return currentTooken ? (cuurrentExchangeRate * amount) * result : (amount / cuurrentExchangeRate ) * result 
 }
 
-export const commission = (accountId,amount,delay,exchangeRate,token) => {
+export const commission = (accountId,amount,delay,exchangeRate,token,isSwaped) => {
     const [commissionFree,setCommissionFree] = useState('')
     const [isLoadingCommission,setIsLoadingCommission] = useState(false)
     const debounceValue = useDebounce(amount,delay)
@@ -96,7 +96,7 @@ export const commission = (accountId,amount,delay,exchangeRate,token) => {
         getCommission()
        
         return () => setCommissionFree('')
-    },[debounceValue,exchangeRate,token])
+    },[debounceValue,exchangeRate,isSwaped])
     
     return {commissionFree, isLoadingCommission}
 }
