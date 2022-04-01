@@ -110,13 +110,15 @@ const SwapTokenContainer = ({
             ? +formatNearAmount(fromTotoken?.balance)
             : +formatTokenAmount(
                   fromTotoken?.balance,
-                  fromTotoken?.onChainFTMetadata?.decimals
+                  fromTotoken?.onChainFTMetadata?.decimals,
+                  5
               );
 
     const error = setInputValueFrom && balance < +value;
     const formatMuliplier = +muliplier / 10000;
     const handelChange = (e) => {
-        setInputValueFrom(e.target.value);
+        const { value } = e.target
+        setInputValueFrom(value.replace(/[^.\d,]/g, ''));
     };
 
     return (
@@ -155,7 +157,7 @@ const SwapTokenContainer = ({
                 </div>
                 {setInputValueFrom ? (
                     <input
-                        type="number"
+                        type="text"
                         autoFocus
                         value={value}
                         onChange={handelChange}

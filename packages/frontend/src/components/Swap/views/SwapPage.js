@@ -12,7 +12,7 @@ import SwapTokenContainer from '../SwapTokenContainer'
 const balanceForError = (from) => {
     return from?.onChainFTMetadata?.symbol === "NEAR"
         ? +formatNearAmount(from?.balance)
-        : +formatTokenAmount(from?.balance, from?.onChainFTMetadata?.decimals);
+        : +formatTokenAmount(from?.balance, from?.onChainFTMetadata?.decimals, 5);
 };
 
 const SwapPage = ({

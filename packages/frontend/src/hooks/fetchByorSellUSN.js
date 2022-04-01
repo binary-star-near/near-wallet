@@ -15,7 +15,7 @@ const setArgsUSNContractBuy = (multiplier, slippage, amount) => {
                 decimals: 28,
             },
         },
-        amount: parseTokenAmount(amount * 10 ** 24, 0),
+        amount: parseTokenAmount(amount * (10 ** 24), 0),
         gas: 50000000000000,
     }
 }
@@ -23,7 +23,7 @@ const setArgsUSNContractBuy = (multiplier, slippage, amount) => {
 const setArgsUSNContractSell = (amount, multiplier, slippage) => {
     return {
         args: {
-            amount: parseTokenAmount(amount * 10 ** 18, 0),
+            amount: parseTokenAmount(amount * (10 ** 18), 0),
             expected: {
                 multiplier,
                 slippage: `${Math.round(
