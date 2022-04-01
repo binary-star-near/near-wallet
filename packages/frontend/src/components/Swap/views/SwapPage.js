@@ -26,7 +26,8 @@ const SwapPage = ({
     accountId,
     isLoading,
     onClickContinue,
-    onSwap
+    onSwap,
+    setUSNamount
 }) => {
     const [isSwaped, setIsSwaped] = useState(false)
     const {commissionFree, isLoadingCommission} = commission(accountId, inputValueFrom, 500, +miltiplier, from, isSwaped)
@@ -47,7 +48,7 @@ const SwapPage = ({
             setInputValueFrom={setInputValueFrom}
         />
         <AvailableToSwap
-            onClick={(balance) => setInputValueFrom(balance)}
+            onClick={(balance) => {setInputValueFrom(balance); from?.onChainFTMetadata?.symbol === 'USN' && setUSNamount(from?.balance)}}
             balance={from?.balance}
             symbol={from?.onChainFTMetadata?.symbol}
             decimals={from?.onChainFTMetadata?.decimals}

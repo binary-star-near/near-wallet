@@ -42,10 +42,10 @@ const SwapContainerWrapper = () => {
         swapContractValue={swapContractValue}
         activeView={activeView}
         isLoading={isLoading}
-        handleSwapToken={async (slipPage, amount, symbol) => {
+        handleSwapToken={async (slipPage, amount, symbol, USNamount) => {
             try {
                 setIsLoading(true)
-                await fetchByOrSell(accountId,miltiplier,slipPage,amount,symbol)
+                await fetchByOrSell(accountId,miltiplier,slipPage,amount,symbol,USNamount)
                 setActiveView(VIEWS_SWAP.SUCCESS)
             } catch (e) {
                 dispatch(showCustomAlert({

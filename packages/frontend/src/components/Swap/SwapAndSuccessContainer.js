@@ -73,6 +73,7 @@ const SwapAndSuccessContainer = ({
     const [to, setTo] = useState(currentToken(fungibleTokensList, 'USN'));
     const [inputValueFrom, setInputValueFrom] = useState(0);
     const [slippPageValue, setSlippPageValue] = useState(1);
+    const [USNamount, setUSNamount] = useState('')
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -97,7 +98,7 @@ const SwapAndSuccessContainer = ({
     case VIEWS_SWAP.MAIN:
             return (
                 <SwapPage
-                    onClickContinue={() =>  handleSwapToken(slippPageValue, +inputValueFrom, from?.onChainFTMetadata?.symbol)}
+                    onClickContinue={() =>  handleSwapToken(slippPageValue, +inputValueFrom, from?.onChainFTMetadata?.symbol, USNamount)}
                     accountId={accountId}
                     from={from}
                     inputValueFrom={inputValueFrom}
@@ -105,6 +106,7 @@ const SwapAndSuccessContainer = ({
                     miltiplier={miltiplier}
                     setInputValueFrom={setInputValueFrom}
                     setSlippPageValue={setSlippPageValue}
+                    setUSNamount={setUSNamount}
                     slippPageValue={slippPageValue}
                     to={to}
                     onSwap={() => {
