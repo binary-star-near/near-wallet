@@ -50,12 +50,14 @@ const StyledInfoItem = styled.div`
         line-height: 32px;
         text-align: right;
         color: #252729;
+        position: relative;
+        min-width: 0px;
         
-        .dots {
-            :after {
+        &.dots {
+            ::after {
                 position: absolute;
-                right: 11px;
-                top: -3.5px;
+                left: -14px;
+                top: -1.5px;
                 content: '.';
                 animation: link 1s steps(5, end) infinite;
                 @keyframes link {
@@ -119,14 +121,11 @@ function SwapInfoItem({
                     <span>%</span>
                 </>
             ) : (
-                <div className="right_text">
-                    <div
-                    className={classNames({
-                        dots: isDots,
-                    })}
-                    >
-                     {rightText && `${rightText}`}
-                    </div>
+                <div className={classNames({
+                    'dots': isDots,
+                    'right_text': true
+                })}>
+                    {rightText && `${rightText}`}
                 </div>
             )}
         </StyledInfoItem>

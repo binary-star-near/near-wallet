@@ -36,6 +36,7 @@ const SwapPage = ({
     const error = balance < +inputValueFrom;
     const splpPageError = slippPageValue < 1 || slippPageValue > 50;
 
+
   return (
     <>
          <h1>
@@ -76,8 +77,9 @@ const SwapPage = ({
             token={from?.onChainFTMetadata?.symbol}
             exchngeRate={+miltiplier / 10000}
             amount={inputValueFrom}
-            tradinFree={commissionFree}
+            tradinFree={commissionFree?.result}
             isLoading={isLoadingCommission}
+            percent={commissionFree?.percent}
         />
         <div className="buttons-bottom-buttons">
             <FormButton

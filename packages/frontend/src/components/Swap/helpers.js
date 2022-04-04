@@ -75,7 +75,10 @@ async function fetchCommissiom (accountId,amount,exchangeRate,token) {
     const USNamount = `${currentTooken ? parseTokenAmount(roundeUSNExchange(amount,exchangeRate) * 10 ** 18, 0) : parseTokenAmount(amount * 10 ** 18, 0)}`
     const result = await usnContract.spread({ amount:USNamount }) / 1000000
 
-    return currentTooken ? (cuurrentExchangeRate * amount) * result : (amount / cuurrentExchangeRate ) * result 
+    return {
+        result: currentTooken ? (cuurrentExchangeRate * amount) * result : (amount / cuurrentExchangeRate ) * result,
+        percent: Number(result * 100)?.toFixed(2) 
+    } 
 }
 
 export const commission = (accountId,amount,delay,exchangeRate,token,isSwaped) => {
@@ -95,7 +98,7 @@ export const commission = (accountId,amount,delay,exchangeRate,token,isSwaped) =
         
         getCommission()
        
-        return () => setCommissionFree('')
+        // return () => setCommissionFree('')
     },[debounceValue,exchangeRate,isSwaped])
     
     return {commissionFree, isLoadingCommission}

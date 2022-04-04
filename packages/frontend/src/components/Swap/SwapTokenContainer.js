@@ -171,7 +171,7 @@ const SwapTokenContainer = ({
                                 fromTotoken,
                                 +value,
                                 formatMuliplier
-                            )}
+                            )?.toFixed(5)}
                         </>
                     </div>
                 ) : null}
