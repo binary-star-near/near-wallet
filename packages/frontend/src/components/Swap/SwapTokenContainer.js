@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
 import TokenIcon from "../send/components/TokenIcon";
 import { EXPLORER_URL } from "../../config";
@@ -105,6 +105,7 @@ const SwapTokenContainer = ({
     setInputValueFrom,
     muliplier,
 }) => {
+    const inputRef = useRef(null)
     const balance =
         fromTotoken?.onChainFTMetadata?.symbol === "NEAR"
             ? +formatNearAmount(fromTotoken?.balance)
@@ -121,8 +122,14 @@ const SwapTokenContainer = ({
         setInputValueFrom(value.replace(/[^.\d,]/g, ''));
     };
 
+    const onFocus = () => {
+        if(setInputValueFrom) {
+            inputRef.current.focus()
+        }
+    }
+
     return (
-        <SwapContainer className={error ? "error" : ""}>
+        <SwapContainer className={error ? "error" : ""} onClick={onFocus}>
             <div className="text">
                 <Translate id={text} />
             </div>
@@ -157,6 +164,7 @@ const SwapTokenContainer = ({
                 </div>
                 {setInputValueFrom ? (
                     <input
+                        ref={inputRef}
                         type="text"
                         autoFocus
                         value={value}
