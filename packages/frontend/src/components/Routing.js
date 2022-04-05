@@ -136,7 +136,6 @@ class Routing extends Component {
 
         this.pollTokenFiatValue = null;
         this.pollTokenFiatValueUSD = null;
-        this.pollExchangeRate = null
 
         const languages = [
             { name: 'English', code: 'en' },
@@ -192,7 +191,6 @@ class Routing extends Component {
             router,
             fetchTokenFiatValues,
             fetchTokenUSDNFiatValues,
-            fetchMultiplier,
             handleClearAlert
         } = this.props;
 
@@ -231,7 +229,7 @@ class Routing extends Component {
     }
 
     startPollingTokenFiatValue = () => {
-        const { fetchTokenFiatValues, fetchTokenUSDNFiatValues, fetchMultiplier} = this.props;
+        const { fetchTokenFiatValues, fetchTokenUSDNFiatValues } = this.props;
 
         const handlePollTokenFiatValue = async () => {
             await fetchTokenFiatValues().catch(() => {});
@@ -258,20 +256,6 @@ class Routing extends Component {
         };
         this.pollTokenFiatValueUSD = setTimeout(
             () => handlePollTokenFiatValueUSDN(),
-            30000
-        );
-
-        const handlePollTokenfetchMultiplier = async () => {
-            await fetchMultiplier().catch(() => {});
-            if (this.pollExchangeRate) {
-                this.pollExchangeRate = setTimeout(
-                    () => handlePollTokenfetchMultiplier(),
-                    30000
-                );
-            }
-        };
-        this.pollExchangeRate = setTimeout(
-            () => handlePollTokenfetchMultiplier(),
             30000
         );
     };
@@ -624,7 +608,6 @@ const mapDispatchToProps = {
     redirectTo,
     fetchTokenFiatValues,
     fetchTokenUSDNFiatValues,
-    fetchMultiplier,
     handleClearAlert
 };
 

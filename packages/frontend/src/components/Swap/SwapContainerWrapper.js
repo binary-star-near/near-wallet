@@ -36,6 +36,7 @@ const SwapContainerWrapper = () => {
 
   return (
     <SwapAndSuccessContainer
+        onRefreshMultiplier={() => dispatch(fetchMultiplier())}
         fungibleTokensList={fungibleTokensList}
         accountId={accountId}
         miltiplier={miltiplier}

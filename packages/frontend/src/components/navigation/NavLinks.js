@@ -97,7 +97,7 @@ const NavLinks = () => (
         <NavLink
             to="/swap-money"
             activeClassName="selected"
-            onClick={() => Mixpanel.track("Click Account button on nav")}
+            onClick={() => Mixpanel.track("Click Swap button on nav")}
         >
             <div>
                 <SwapIconTwoArrows

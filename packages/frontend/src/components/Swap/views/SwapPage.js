@@ -6,6 +6,7 @@ import FormButton from '../../common/FormButton'
 import SwapIconTwoArrows from '../../svg/SwapIconTwoArrows'
 import AvailableToSwap from '../AvailableToSwap'
 import { commission } from '../helpers'
+import Loader from '../Loader'
 import SwapInfoContainer from '../SwapInfoContainer'
 import SwapTokenContainer from '../SwapTokenContainer'
 
@@ -27,7 +28,8 @@ const SwapPage = ({
     isLoading,
     onClickContinue,
     onSwap,
-    setUSNamount
+    setUSNamount,
+    onRefreshMultiplier
 }) => {
     const [isSwaped, setIsSwaped] = useState(false)
     const {commissionFree, isLoadingCommission} = commission(accountId, inputValueFrom, 500, +miltiplier, from, isSwaped)
@@ -36,9 +38,9 @@ const SwapPage = ({
     const error = balance < +inputValueFrom;
     const splpPageError = slippPageValue < 1 || slippPageValue > 50;
 
-
   return (
     <>
+        <Loader onRefreshMultiplier={() => onRefreshMultiplier()}/>
          <h1>
             <Translate id="button.swap" />
         </h1>

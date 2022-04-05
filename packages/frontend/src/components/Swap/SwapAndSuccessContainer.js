@@ -13,6 +13,8 @@ export const VIEWS_SWAP = {
 };
 
 const StyledContainer = styled(Container)`
+    position: relative;
+
     h1 {
         text-align: center;
         margin-bottom: 30px;
@@ -67,7 +69,8 @@ const SwapAndSuccessContainer = ({
     activeView,
     isLoading,
     handleSwapToken,
-    handleBackToSwap
+    handleBackToSwap,
+    onRefreshMultiplier
 }) => {
     const [from, setFrom] = useState(fungibleTokensList[0]);
     const [to, setTo] = useState(currentToken(fungibleTokensList, 'USN'));
@@ -77,15 +80,15 @@ const SwapAndSuccessContainer = ({
     const dispatch = useDispatch()
 
     useEffect(() => {
-        if(!swapContractValue) {
-            setFrom(currentToken(fungibleTokensList, from?.onChainFTMetadata?.symbol));
-            setTo(currentToken(fungibleTokensList, to?.onChainFTMetadata?.symbol || 'USN'));
-        } 
-        
         if(swapContractValue && swapContractValue === 'NEAR') {
             setFrom(currentToken(fungibleTokensList, 'USN'));
             setTo(fungibleTokensList[0]);
+            return;
         } 
+
+        setFrom(currentToken(fungibleTokensList, from?.onChainFTMetadata?.symbol));
+        setTo(currentToken(fungibleTokensList, to?.onChainFTMetadata?.symbol || 'USN'));
+        
     }, [fungibleTokensList]);
 
 
@@ -98,6 +101,7 @@ const SwapAndSuccessContainer = ({
     case VIEWS_SWAP.MAIN:
             return (
                 <SwapPage
+                    onRefreshMultiplier={() => onRefreshMultiplier()}
                     onClickContinue={() =>  handleSwapToken(slippPageValue, +inputValueFrom, from?.onChainFTMetadata?.symbol, USNamount)}
                     accountId={accountId}
                     from={from}
@@ -130,8 +134,8 @@ const SwapAndSuccessContainer = ({
                     to={to}
                     miltiplier={miltiplier}
                     handleBackToSwap={async () => {
-                       await handleBackToSwap();
                         setInputValueFrom(0)
+                       await handleBackToSwap(); 
                     }}
                 />
             );

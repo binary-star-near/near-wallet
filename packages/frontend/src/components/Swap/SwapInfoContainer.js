@@ -50,7 +50,7 @@ function SwapInfoContainer({
                 tradinFree={tradinFree}
                 leftText={"swap.TradingFee"}
                 rightText={!amount && !tradinFree
-                    ? `- ${symbol}`
+                    ? `${amount} ${symbol}`
                     : !tradinFree 
                     ? `- ${symbol}`
                     : `${percent}% / ` + tradinFree?.toFixed(5) + ` ${symbol}`
@@ -61,7 +61,7 @@ function SwapInfoContainer({
                 tradinFree={tradinFree}
                 leftText={"swap.MinimumReceived"}
                 rightText={!amount && !tradinFree
-                    ? `- ${symbol}`
+                    ? `${amount} ${symbol}`
                     : !tradinFree 
                     ? `- ${symbol}`
                     : MinimumReceived(symbol, amount, exchngeRate) -
