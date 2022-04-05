@@ -63,8 +63,8 @@ async function fetchCommissiom (accountId,amount,exchangeRate,token) {
     const currentTooken = token?.onChainFTMetadata?.symbol === 'NEAR'
     const cuurrentExchangeRate =  +exchangeRate / 10000
     const usnMethods = {
-        viewMethods: ['version', 'name', 'symbol', 'decimals', 'ft_balance_of'],
-        changeMethods: ['buy', 'sell','spread'],
+        viewMethods: ['version', 'name', 'symbol', 'decimals', 'ft_balance_of', 'spread'],
+        changeMethods: ['buy', 'sell'],
     };
     const account = await wallet.getAccount(accountId);
     const usnContract = new nearApiJs.Contract(
