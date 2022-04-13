@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import { Redirect, Switch } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
 
-import { CREATE_IMPLICIT_ACCOUNT, IMPORT_ACCOUNT_WITH_LINK_V2, CREATE_USN_CONTRACT } from '../../../../features';
+import { CREATE_IMPLICIT_ACCOUNT, IMPORT_ACCOUNT_WITH_LINK_V2, CREATE_USN_CONTRACT, DONATE_TO_UKRAINE } from '../../../../features';
 import TwoFactorVerifyModal from '../components/accounts/two_factor/TwoFactorVerifyModal';
 import { IS_MAINNET, PUBLIC_URL, SHOW_PRERELEASE_WARNING, DISABLE_CREATE_ACCOUNT } from '../config';
 import ExampleFlag from '../ExampleFlag';
@@ -19,7 +19,6 @@ import * as accountActions from '../redux/actions/account';
 import { handleClearAlert } from '../redux/reducers/status';
 import { selectAccountSlice } from '../redux/slices/account';
 import { actions as tokenFiatValueActions } from '../redux/slices/tokenFiatValues';
-import { fetchMultiplier } from '../redux/slices/multiplier'
 import { CreateImplicitAccountWrapper } from '../routes/CreateImplicitAccountWrapper';
 import { ImportAccountWithLinkWrapper } from '../routes/ImportAccountWithLinkWrapper';
 import { LoginWrapper } from '../routes/LoginWrapper';
@@ -85,6 +84,7 @@ import Terms from './terms/Terms';
 import { Wallet } from './wallet/Wallet';
 
 import '../index.css';
+import { DoanteContainerWrapper } from './DonateToUkraine/DonateContainer';
 
 const {
     fetchTokenFiatValues,fetchTokenUSDNFiatValues
@@ -549,6 +549,13 @@ class Routing extends Component {
                                 path="/swap-money"
                                 component={SwapContainerWrapper}
                             />}
+                            {DONATE_TO_UKRAINE && 
+                            <PrivateRoute
+                                exact
+                                ath="/donate-to-Ukraine"
+                                component={DoanteContainerWrapper}
+                            />}
+                            
                             <Route
                                 exact
                                 path='/profile/:accountId'
